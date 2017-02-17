@@ -22,7 +22,7 @@
 ;;-------------------------------------------------------------------
 ;;
 ;; Author: Shuji Narazaki <shuji.narazaki@gmail.com>
-;; Created: 2017-02-
+;; Created: 2017-02-17
 ;; Version: 0.0.1
 ;; Keywords: 
 ;;
@@ -33,3 +33,36 @@
 ;;--------------------------------------------------------------------------------
 
 ;;; Code:
+(setq evil-insert-emacs-key (kbd "C-]"))
+(define-key global-map evil-insert-emacs-key 'evil-normal-state-or-mode)
+(defun evil-normal-state-or-mode ()
+  "FIXME"
+  (interactive)
+  (cond ((not (boundp 'evil-local-mode)) (evil-local-mode))
+	((not evil-local-mode) (turn-on-evil-mode))
+	((eq evil-state 'normal) (turn-off-evil-mode))
+	(t (evil-normal-state))))
+
+(evil-define-state insert-emacs
+  "Emacs state that can't be exited with the escape key."
+  :tag " <IE> "
+  :message "-- EMACS WITH ESCAPE --"
+  :input-method t
+)
+(define-key global-map (kbd evil-toggle-key) 'evil-normal-state-or-mode)
+(define-key evil-normal-state-map (kbd evil-toggle-key) 'evil-normal-state-or-mode)
+(define-key evil-emacs-state-map (kbd evil-toggle-key) 'evil-normal-state)
+(define-key evil-insert-emacs-state-map (kbd evil-toggle-key) 'evil-normal-state)
+(define-key evil-insert-state-map (kbd evil-toggle-key) 'evil-insert-emacs-state)
+(if t
+    (mapc #'evil-declare-change-repeat
+	  '(move-beginning-of-line
+	    move-end-of-line
+	    backward-word
+	    forward-word
+	    transpose-chars
+	    delete-horizontal-space
+	    backward-kill-word
+	    capitalize-word
+	    upcase-word
+	    downcase-word)))
