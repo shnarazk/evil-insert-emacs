@@ -33,7 +33,11 @@
 ;;--------------------------------------------------------------------------------
 
 ;;; Code:
-(setq evil-insert-emacs-key (kbd "C-]"))
+(require 'evil)
+
+(defvar evil-insert-emacs-key (kbd "C-]"))
+(defvar evil-insert-emacs-use-emacs-commands t)
+
 (define-key global-map evil-insert-emacs-key 'evil-normal-state-or-mode)
 (defun evil-normal-state-or-mode ()
   "FIXME"
@@ -54,7 +58,7 @@
 (define-key evil-emacs-state-map (kbd evil-toggle-key) 'evil-normal-state)
 (define-key evil-insert-emacs-state-map (kbd evil-toggle-key) 'evil-normal-state)
 (define-key evil-insert-state-map (kbd evil-toggle-key) 'evil-insert-emacs-state)
-(if t
+(if evil-insert-emacs-use-emacs-commands
     (mapc #'evil-declare-change-repeat
 	  '(move-beginning-of-line
 	    move-end-of-line
@@ -66,3 +70,5 @@
 	    capitalize-word
 	    upcase-word
 	    downcase-word)))
+
+(provide 'evil-insert-emacs)
