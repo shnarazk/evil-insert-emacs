@@ -1,4 +1,4 @@
-;;; evil-insert-emacs.el --- another insert mode (state) for Evil
+;;; evil-insert-emacs.el --- Another insert mode (state) for Evil
 
 ;;--------------------------------------------------------------------------------
 ;;
