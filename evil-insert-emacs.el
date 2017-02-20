@@ -21,9 +21,9 @@
 ;;
 ;;-------------------------------------------------------------------
 ;;
-;; Author: Shuji Narazaki <shuji.narazaki@gmail.com>
+;; Author: Shuji Narazaki shnarazk@github
 ;; Created: 2017-02-17
-;; Version: 0.0.1
+;; Version: 0.0.2
 ;; Keywords: evil, edit
 ;;
 ;;; Commentary:
@@ -38,9 +38,12 @@
 ;; (require 'evil)
 (autoload 'evil-local-mode "evil" nil t)
 
+;;;###autoload
 (defvar evil-insert-emacs-key (kbd "C-]"))
+
 (defvar evil-insert-emacs-use-emacs-commands t)
 
+;;;###autoload
 (define-key global-map evil-insert-emacs-key 'evil-normal-state-or-mode)
 
 ;;;###autoload
@@ -52,7 +55,7 @@
 	((eq evil-state 'normal) (turn-off-evil-mode))
 	(t (evil-normal-state))))
 
-(eval-after-load "evil"
+(eval-after-load 'evil
   '(progn
      (evil-define-state insert-emacs
        "Emacs state that can't be exited with the escape key."
@@ -79,4 +82,4 @@
 		 downcase-word)))))
 
 (provide 'evil-insert-emacs)
-;;; evil-insert-emacs ends here
+;;; evil-insert-emacs.el ends here
