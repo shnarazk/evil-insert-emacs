@@ -1,4 +1,4 @@
-;;; evil-insert-emacs.el --- post to slack channel
+;;; evil-insert-emacs.el --- another insert mode (state) for Evil
 
 ;;--------------------------------------------------------------------------------
 ;;
@@ -24,51 +24,59 @@
 ;; Author: Shuji Narazaki <shuji.narazaki@gmail.com>
 ;; Created: 2017-02-17
 ;; Version: 0.0.1
-;; Keywords: 
+;; Keywords: evil, edit
 ;;
 ;;; Commentary:
 ;;
-;; another insert mode (state) for Evil
+;; - usage:
+;;    Load this file from init.el.  That defines some keys commands, and autoloads.
+;;    Evil itself will be loadde on-demand.
 ;;
 ;;--------------------------------------------------------------------------------
 
 ;;; Code:
-(require 'evil)
+;; (require 'evil)
+(autoload 'evil-local-mode "evil" nil t)
 
 (defvar evil-insert-emacs-key (kbd "C-]"))
 (defvar evil-insert-emacs-use-emacs-commands t)
 
 (define-key global-map evil-insert-emacs-key 'evil-normal-state-or-mode)
+
+;;;###autoload
 (defun evil-normal-state-or-mode ()
-  "FIXME"
+  "Toggle Evil state."
   (interactive)
   (cond ((not (boundp 'evil-local-mode)) (evil-local-mode))
 	((not evil-local-mode) (turn-on-evil-mode))
 	((eq evil-state 'normal) (turn-off-evil-mode))
 	(t (evil-normal-state))))
 
-(evil-define-state insert-emacs
-  "Emacs state that can't be exited with the escape key."
-  :tag " <IE> "
-  :message "-- EMACS WITH ESCAPE --"
-  :input-method t
-)
-(define-key global-map (kbd evil-toggle-key) 'evil-normal-state-or-mode)
-(define-key evil-normal-state-map (kbd evil-toggle-key) 'evil-normal-state-or-mode)
-(define-key evil-emacs-state-map (kbd evil-toggle-key) 'evil-normal-state)
-(define-key evil-insert-emacs-state-map (kbd evil-toggle-key) 'evil-normal-state)
-(define-key evil-insert-state-map (kbd evil-toggle-key) 'evil-insert-emacs-state)
-(if evil-insert-emacs-use-emacs-commands
-    (mapc #'evil-declare-change-repeat
-	  '(move-beginning-of-line
-	    move-end-of-line
-	    backward-word
-	    forward-word
-	    transpose-chars
-	    delete-horizontal-space
-	    backward-kill-word
-	    capitalize-word
-	    upcase-word
-	    downcase-word)))
+(eval-after-load "evil"
+  '(progn
+     (evil-define-state insert-emacs
+       "Emacs state that can't be exited with the escape key."
+       :tag " <IE> "
+       :message "-- EMACS WITH ESCAPE --"
+       :input-method t
+       )
+     (define-key global-map (kbd evil-toggle-key) 'evil-normal-state-or-mode)
+     (define-key evil-normal-state-map (kbd evil-toggle-key) 'evil-normal-state-or-mode)
+     (define-key evil-emacs-state-map (kbd evil-toggle-key) 'evil-normal-state)
+     (define-key evil-insert-emacs-state-map (kbd evil-toggle-key) 'evil-normal-state)
+     (define-key evil-insert-state-map (kbd evil-toggle-key) 'evil-insert-emacs-state)
+     (if evil-insert-emacs-use-emacs-commands
+	 (mapc #'evil-declare-change-repeat
+	       '(move-beginning-of-line
+		 move-end-of-line
+		 backward-word
+		 forward-word
+		 transpose-chars
+		 delete-horizontal-space
+		 backward-kill-word
+		 capitalize-word
+		 upcase-word
+		 downcase-word)))))
 
 (provide 'evil-insert-emacs)
+;;; evil-insert-emacs ends here
