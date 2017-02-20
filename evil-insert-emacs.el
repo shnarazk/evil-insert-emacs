@@ -1,8 +1,16 @@
 ;;; evil-insert-emacs.el --- Another insert mode (state) for Evil
 
-;;--------------------------------------------------------------------------------
-;;
 ;; Copyright (C) 2017 Shuji Narazaki
+;; Author: Shuji Narazaki <shuji.narazaki@gmail.com>
+;; Created: 2017-02-17
+;; Package-Version: 0.0.2
+;; Version: 0.0.2
+;; URL: http://github.com/shnarazk/evil-insert-emacs
+;; Keywords: convenience
+;; Package-Requires: ((evil "1.2"))
+;;
+
+;;--------------------------------------------------------------------------------
 ;;
 ;; This program is free software; you can redistribute it and/or
 ;; modify it under the terms of the GNU General Public License as
@@ -20,11 +28,6 @@
 ;; MA 02111-1307 USA
 ;;
 ;;-------------------------------------------------------------------
-;;
-;; Author: Shuji Narazaki shnarazk@github
-;; Created: 2017-02-17
-;; Version: 0.0.2
-;; Keywords: evil, edit
 ;;
 ;;; Commentary:
 ;;
