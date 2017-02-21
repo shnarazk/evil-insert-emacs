@@ -38,7 +38,8 @@
 ;;--------------------------------------------------------------------------------
 
 ;;; Code:
-;; (require 'evil)
+(eval-when-compile (require 'evil))
+
 (autoload 'evil-local-mode "evil" nil t)
 
 ;;;###autoload
