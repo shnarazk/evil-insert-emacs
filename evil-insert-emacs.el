@@ -58,10 +58,14 @@
 	(t (evil-normal-state))))
 
 ;;; customize -- FIXME
-(defvar evil-insert-emacs-use-emacs-commands t)
-(defvar evil-insert-emacs-overlay-indicator t)
-(defvar evil-insert-use-overlay-indicator t)
-(defvar evil-insert-emacs-sandbox t)
+(defvar evil-insert-emacs-use-emacs-commands t
+  "Overwrite Evil's evil-declare-change/abort-repeat setting to use more commands in insert-emacs state.")
+(defvar evil-insert-emacs-overlay-indicator t
+  "Use overlay to indiate whether the current state is insert-emacs.")
+(defvar evil-insert-use-overlay-indicator t
+  "Use overlay to indiate whether the current state is insert or insert-emacs.")
+(defvar evil-insert-emacs-sandbox t
+  "Restrict editable region by using 'cursor-intangible-mode'.")
 
 ;;; local variables
 (defvar evil-insert-emacs-beg-marker (make-marker))
@@ -98,6 +102,7 @@
 		 just-one-space)))))
 
 (defun evil-insert-state-set-overlay-indicator ()
+  "Display insert mode (state) indicator using overlay."
   (set-marker evil-insert-emacs-beg-marker (point))
   (set-marker evil-insert-emacs-end-marker (point))
   (when evil-insert-emacs-overlay-indicator
@@ -111,6 +116,7 @@
 	    (overlay-put r 'cursor-intangible t)))))
 
 (defun evil-insert-state-clear-overlay-indicator ()
+  "Clear the overlay that was created by 'evil-insert-state-set-overlay-indicator'."
   (when evil-insert-emacs-overlay-indicator
     (when evil-insert-emacs-sandbox
       (remove-overlays (point-min) (point-max) 'cursor-intangible t))
