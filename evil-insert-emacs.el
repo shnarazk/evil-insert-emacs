@@ -3,8 +3,8 @@
 ;; Copyright (C) 2017 Shuji Narazaki
 ;; Author: Shuji Narazaki <shuji.narazaki@gmail.com>
 ;; Created: 2017-02-17
-;; Package-Version: 0.0.2
-;; Version: 0.0.2
+;; Package-Version: 0.0.3
+;; Version: 0.0.3
 ;; URL: http://github.com/shnarazk/evil-insert-emacs
 ;; Keywords: convenience
 ;; Package-Requires: ((evil "1.2"))
@@ -58,6 +58,12 @@
 	((eq evil-state 'normal) (turn-off-evil-mode))
 	(t (evil-normal-state))))
 
+(defvar evil-insert-emacs-overlay-indicator t)
+(defvar evil-insert-emacs-beg-marker (make-marker))
+(set-marker-insertion-type evil-insert-emacs-beg-marker nil)
+(defvar evil-insert-emacs-end-marker (make-marker))
+(set-marker-insertion-type evil-insert-emacs-end-marker t)
+
 (eval-after-load 'evil
   '(progn
      (evil-define-state insert-emacs
@@ -79,10 +85,38 @@
 		 forward-word
 		 transpose-chars
 		 delete-horizontal-space
+		 kill-word
 		 backward-kill-word
 		 capitalize-word
 		 upcase-word
-		 downcase-word)))))
+		 downcase-word
+		 just-one-space)))))
+
+(defun evil-insert-state-set-overlay-indicator ()
+  (set-marker evil-insert-emacs-beg-marker (point))
+  (set-marker evil-insert-emacs-end-marker (point))
+  (if evil-insert-emacs-overlay-indicator
+      (let ((o (make-overlay (point) (point) (current-buffer) nil t)))
+	(overlay-put o 'face 'mode-line))))
+
+(defun evil-insert-state-clear-overlay-indicator ()
+  (if evil-insert-emacs-overlay-indicator
+      (remove-overlays evil-insert-emacs-beg-marker evil-insert-emacs-end-marker 'face 'mode-line)))
+
+(add-hook 'evil-insert-emacs-state-entry-hook #'evil-insert-state-set-overlay-indicator)
+(add-hook 'evil-insert-emacs-state-exit-hook #'evil-insert-state-clear-overlay-indicator)
+
+; (setq evil-insert-emacs-state-entry-hook ())
+'(add-hook 'evil-insert-emacs-state-entry-hook
+ ( lambda ()
+   (let ((s (max (- (evil-get-marker ?^) 1) (point-min))))
+     (set-marker evil-insert-emacs-beg-marker s)
+     (add-face-text-property s (point) 'region))))
+
+'(setq evil-insert-state-entry-hook ())
+'(add-hook 'evil-insert-state-exit-hook
+ ( lambda ()
+   (add-face-text-property evil-insert-emacs-beg-marker evil-insert-emacs-end-marker 'default)))
 
 (provide 'evil-insert-emacs)
 ;;; evil-insert-emacs.el ends here
