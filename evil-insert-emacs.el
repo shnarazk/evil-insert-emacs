@@ -101,14 +101,14 @@
   (set-marker evil-insert-emacs-beg-marker (point))
   (set-marker evil-insert-emacs-end-marker (point))
   (when evil-insert-emacs-overlay-indicator
-    (when evil-insert-emacs-sandbox
-          (let ((l (make-overlay (point-min) (current-buffer) t nil))
-		(r (make-overlay (point) (point-max) (current-buffer) t nil)))
-      (cursor-intangible-mode 1)
-      (overlay-put l 'cursor-intangible t)
-      (overlay-put r 'cursor-intangible t)))
     (let ((o (make-overlay (point) (point) (current-buffer) nil t)))
-      (overlay-put o 'face 'mode-line))))
+      (overlay-put o 'face 'mode-line))
+    (when evil-insert-emacs-sandbox
+          (let ((l (make-overlay (point-min) (point) (current-buffer) t nil))
+		(r (make-overlay (point) (point-max) (current-buffer) t nil)))
+	    (cursor-intangible-mode 1)
+	    (overlay-put l 'cursor-intangible t)
+	    (overlay-put r 'cursor-intangible t)))))
 
 (defun evil-insert-state-clear-overlay-indicator ()
   (when evil-insert-emacs-overlay-indicator
