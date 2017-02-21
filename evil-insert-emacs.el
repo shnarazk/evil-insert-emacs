@@ -1,10 +1,10 @@
 ;;; evil-insert-emacs.el --- Another insert mode (state) for Evil
 
 ;; Copyright (C) 2017 Shuji Narazaki
-;; Author: Shuji Narazaki <shuji.narazaki@gmail.com>
+;; Author: Shuji Narazaki (@shnarazk on github)
 ;; Created: 2017-02-17
-;; Package-Version: 0.0.3
-;; Version: 0.0.3
+;; Package-Version: 0.0.4
+;; Version: 0.0.4
 ;; URL: http://github.com/shnarazk/evil-insert-emacs
 ;; Keywords: convenience
 ;; Package-Requires: ((evil "1.2"))
@@ -44,8 +44,6 @@
 ;;;###autoload
 (defvar evil-insert-emacs-key (kbd "C-]"))
 
-(defvar evil-insert-emacs-use-emacs-commands t)
-
 ;;;###autoload
 (define-key global-map evil-insert-emacs-key 'evil-normal-state-or-mode)
 
@@ -58,7 +56,12 @@
 	((eq evil-state 'normal) (turn-off-evil-mode))
 	(t (evil-normal-state))))
 
+;;; customize -- FIXME
+(defvar evil-insert-emacs-use-emacs-commands t)
 (defvar evil-insert-emacs-overlay-indicator t)
+(defvar evil-insert-use-overlay-indicator t)
+
+;;; local variables
 (defvar evil-insert-emacs-beg-marker (make-marker))
 (set-marker-insertion-type evil-insert-emacs-beg-marker nil)
 (defvar evil-insert-emacs-end-marker (make-marker))
@@ -106,17 +109,9 @@
 (add-hook 'evil-insert-emacs-state-entry-hook #'evil-insert-state-set-overlay-indicator)
 (add-hook 'evil-insert-emacs-state-exit-hook #'evil-insert-state-clear-overlay-indicator)
 
-; (setq evil-insert-emacs-state-entry-hook ())
-'(add-hook 'evil-insert-emacs-state-entry-hook
- ( lambda ()
-   (let ((s (max (- (evil-get-marker ?^) 1) (point-min))))
-     (set-marker evil-insert-emacs-beg-marker s)
-     (add-face-text-property s (point) 'region))))
-
-'(setq evil-insert-state-entry-hook ())
-'(add-hook 'evil-insert-state-exit-hook
- ( lambda ()
-   (add-face-text-property evil-insert-emacs-beg-marker evil-insert-emacs-end-marker 'default)))
+(when evil-insert-use-overlay-indicator
+  (add-hook 'evil-insert-state-entry-hook #'evil-insert-state-set-overlay-indicator)
+  (add-hook 'evil-insert-state-exit-hook #'evil-insert-state-clear-overlay-indicator))
 
 (provide 'evil-insert-emacs)
 ;;; evil-insert-emacs.el ends here
