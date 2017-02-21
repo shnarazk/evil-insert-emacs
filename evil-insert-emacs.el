@@ -31,9 +31,9 @@
 ;;
 ;;; Commentary:
 ;;
-;; - usage:
-;;    Load this file from init.el.  That defines some keys commands, and autoloads.
-;;    Evil itself will be loadde on-demand.
+;; - Usage:
+;;    Use package.el toinstall this; some keys, commands, and autoloads are defined.
+;;    Evil and this package itself will be loaded on-demand.
 ;;
 ;;--------------------------------------------------------------------------------
 
