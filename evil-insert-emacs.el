@@ -129,5 +129,13 @@
   (add-hook 'evil-insert-state-entry-hook #'evil-insert-state-set-overlay-indicator)
   (add-hook 'evil-insert-state-exit-hook #'evil-insert-state-clear-overlay-indicator))
 
+;;; By defining a more emacs-flavored state, insert-mode doesn't need universal-argument.
+(define-key evil-insert-state-map "\C-u" 'evil-insert-delete-all)
+
+(defun evil-insert-delete-all ()
+  "Clear the content typed in."
+  (interactive "*")
+  (delete-region evil-insert-emacs-beg-marker evil-insert-emacs-end-marker))
+
 (provide 'evil-insert-emacs)
 ;;; evil-insert-emacs.el ends here
