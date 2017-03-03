@@ -99,7 +99,16 @@
 		 capitalize-word
 		 upcase-word
 		 downcase-word
-		 just-one-space)))))
+		 just-one-space)))
+     ;; By defining a more emacs-flavored state, insert-mode doesn't need universal-argument.
+     (define-key evil-insert-state-map "\C-u" 'evil-insert-delete-all)
+     (defun evil-insert-delete-all ()
+       "Clear the content typed in."
+       (interactive "*")
+       (delete-region evil-insert-emacs-beg-marker evil-insert-emacs-end-marker))
+     ;; Furthermore import C-c from vim
+     (define-key evil-insert-state-map "\C-c" 'evil-normal-state)
+     ))
 
 (defun evil-insert-state-set-overlay-indicator ()
   "Display insert mode (state) indicator using overlay."
