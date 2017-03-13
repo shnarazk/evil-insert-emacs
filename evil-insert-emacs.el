@@ -3,8 +3,8 @@
 ;; Copyright (C) 2017 Shuji Narazaki
 ;; Author: Shuji Narazaki (@shnarazk on github)
 ;; Created: 2017-02-17
-;; Package-Version: 0.0.5
-;; Version: 0.0.5
+;; Package-Version: 0.0.6
+;; Version: 0.0.6
 ;; URL: http://github.com/shnarazk/evil-insert-emacs
 ;; Keywords: convenience
 ;; Package-Requires: ((evil "1.2"))
@@ -112,7 +112,7 @@
   (set-marker evil-insert-emacs-end-marker (point))
   (when evil-insert-emacs-overlay-indicator
     (let ((o (make-overlay (point) (point) (current-buffer) nil t)))
-      (overlay-put o 'face 'mode-line))
+      (overlay-put o 'face 'region))
     (when evil-insert-emacs-sandbox
           (let ((l (make-overlay (point-min) (point) (current-buffer) t nil))
 		(r (make-overlay (point) (point-max) (current-buffer) t nil)))
@@ -125,7 +125,7 @@
   (when evil-insert-emacs-overlay-indicator
     (when evil-insert-emacs-sandbox
       (remove-overlays (point-min) (point-max) 'cursor-intangible t))
-    (remove-overlays evil-insert-emacs-beg-marker evil-insert-emacs-end-marker 'face 'mode-line)))
+    (remove-overlays evil-insert-emacs-beg-marker evil-insert-emacs-end-marker 'face 'region)))
 
 (add-hook 'evil-insert-emacs-state-entry-hook #'evil-insert-state-set-overlay-indicator)
 (add-hook 'evil-insert-emacs-state-exit-hook #'evil-insert-state-clear-overlay-indicator)
